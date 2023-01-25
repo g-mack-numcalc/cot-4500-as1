@@ -1,6 +1,4 @@
 # 6 questions
-# testing
-
 
 #1
 #Use double precision to calculate the resulting values(format to 5 decimal places)
