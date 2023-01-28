@@ -5,7 +5,6 @@ import math #importing required for truncate function
 #1
 #Use double precision to calculate the resulting values(format to 5 decimal places)
 # 0 10000000111 111010111001 
-
 #-1^s * 2^(c-1023) * (1 + f)
 
 def double_precision(s, c, f): #function to find the value of the specified string of binary code
@@ -34,15 +33,14 @@ s_binary: str = 0 #splitting the binary line into the appropriate sections
 c_binary: str = 10000000111
 f_binary: str = 111010111001
 
-
 number_one = double_precision(s_binary, c_binary, f_binary) #calling the function to calculate the double precision value from the binary line
 
 print(format(number_one, '.5f')) #printing the answer to number one, to 5 decimal places
+print("")
 
 
 #2
 #Repeat number 1 using three-digit CHOPPING arithmetic
-
 
 def chopping_values(s, c, f):
     i = 0 #creating variable to loop through the string of binary code for the exponent
@@ -68,6 +66,8 @@ def chopping_values(s, c, f):
 number_two = chopping_values(s_binary, c_binary, f_binary) #calling function to calculate using chopped variables
 
 print(format(number_two, '.5f')) #printing the answer to number 2
+print("")
+
 
 #3
 #Repeat number 1 using three-digit ROUNDING arithmetic
@@ -97,6 +97,8 @@ def rounding_values(s, c, f): #function to find the value of the specified strin
 number_three = rounding_values(s_binary, c_binary, f_binary) #calculating using rounding to 3 digits
 
 print(format(number_three, '.5f')) #printing the answer to number 3
+print("")
+
 
 #4
 #Compute the absolute and relative error with the exact value from question 1 and its 3 digit ROUNDING
@@ -106,6 +108,7 @@ def absolute_error(exact, rounded): #function to calculate the percentage of abs
     print(round(difference*100,5)) #express as a percentage
 
 absolute_error(number_one, number_three) #calling funcation to calculate the absolute error
+print("")
 
 def relative_error(exact, rounded): #function to calculate the percentage of absolute error
     difference = abs(exact - rounded) #calculate the difference
@@ -113,6 +116,8 @@ def relative_error(exact, rounded): #function to calculate the percentage of abs
     print(round(relativity*100, 5)) #express as a percentage
 
 relative_error(number_one, number_three) #calling the funciton to calculate the relative error
+print("")
+
 
 #5
 #Consider the infinite series
@@ -138,7 +143,6 @@ def check_always_decreasing(function): #function to check if the function is alw
     
     return check #return True or False
 
-
 function = "(-1**k) * (x**k) / (k**3)" #defining function
 x = int(1) #setting x equal to 1
 check1 = check_alternating(function) #calling the function to check if the function is alternating
@@ -148,12 +152,12 @@ if check1 and check2: #if it is always decreasing and alternating we can assume
     number_of_terms = (10**(4/3))-1
     number_five = math.ceil(number_of_terms) #round up to get the number of terms
     print(number_five) #print the answer to number five
-
-
+print("")
 
 #6
 #Determine the number of iterations necessary to solve f(x) = x^3 + 4x^2 - 10 = 0
 #with accuracy 10^-4 using a = -4 and b = 7.
+
 #a) Using the bisection method
 
 def bisection(left, right, function): #function to calculate number of iterations using bisection
@@ -195,15 +199,41 @@ def bisection(left, right, function): #function to calculate number of iteration
 
     return i #return the number of iterations
 
-
 a = -4 #setting the left bound
 b = 7 #setting the right bound
 function_b = "(x**3) + 4*(x**2) - 10" #defining the function
 number_6a = bisection(a, b, function_b) #calling the function to calculate the number of iterations
 
-print(number_6a) #printing the answer to number 6a
+print(number_6a) #printing the answer to number 6 part a
+print("")
 
-#b) Using the newton Raphson method
+# Number 6 part b) Using the newton Raphson method
 
+def calc_derivative_value(value): #function used to calculate the value of the derivative at a certain point
+    return (3*(value**2) + 8*value)
 
+def newton_raphson(initial_approximation, tol, function): #function used to calculate the number of iterations using newton-raphson
+    i = 0 #defining iteration variable
+    x = initial_approximation 
+    f = eval(function) #calculating the value of the function at the initial starting point
 
+    f_prime = calc_derivative_value(initial_approximation) #calling function to get value of derivative
+
+    approximation:float = f/f_prime #calculating the approximation
+    while (abs(approximation) >= tol): #loops until the approximation meets the threshold
+        x = initial_approximation 
+        f = eval(function) #calculating the value of the function at the correct point
+        f_prime = calc_derivative_value(initial_approximation) #calculating the value of the derivative
+
+        approximation = f/f_prime #recalculating the approximation
+
+        initial_approximation -= approximation #subtracting the value of the approximation from the starting value
+        i += 1 #counting the iterations
+    
+    return i #return the number of iterations
+
+tol = .0001 #defining the tolerance
+
+number_6b = newton_raphson(a, tol, function_b) #calling the function to calculate the number of iterations needed
+
+print(number_6b) #print the answer to number 6 part b
