@@ -105,49 +105,49 @@ def absolute_error(exact, rounded): #function to calculate the percentage of abs
     difference = abs(exact - rounded) #calculate difference
     print(round(difference*100,5)) #express as a percentage
 
-absolute_error(number_one, number_three)
+absolute_error(number_one, number_three) #calling funcation to calculate the absolute error
 
 def relative_error(exact, rounded): #function to calculate the percentage of absolute error
     difference = abs(exact - rounded) #calculate the difference
     relativity = difference/abs(exact) #divide the difference by the exact calculated value
     print(round(relativity*100, 5)) #express as a percentage
 
-relative_error(number_one, number_three)
+relative_error(number_one, number_three) #calling the funciton to calculate the relative error
 
 #5
 #Consider the infinite series
 # f(x)= SUM(k=1,inf)[{(-1)^k}({x^k}/{k^3})]
 #What is the minimum number of terms needed to compute f(1) with error < 10^-4
 
-def check_alternating(function):
-    if "-1**k" in function:
+def check_alternating(function):#function to check if the function is alternating
+    if "-1**k" in function: #if it has the alternating piece, return True
         return True
-    else:
+    else: #otherwise return False
         return False
 
-def check_always_decreasing(function):
-    check = True
-    k = 1
-    starting_value = abs(eval(function))
+def check_always_decreasing(function): #function to check if the function is always decreasing
+    check = True #set it to True by default
+    k = 1 #set starting k value
+    starting_value = abs(eval(function)) #set starting function value with x = 1
 
-    for k in range(2, 5):
+    for k in range(2, 5): #calculate the values when k ranges from 2 and beyond
         result = abs(eval(function))
 
-        if starting_value <= result:
-            check = False
+        if starting_value <= result: #if any value is greater than the starting it is not always decreasing
+            check = False #then return False
     
-    return check
+    return check #return True or False
 
 
-function = "(-1**k) * (x**k) / (k**3)"
-x = int(1)
-check1 = check_alternating(function)
-check2 = check_always_decreasing(function)
+function = "(-1**k) * (x**k) / (k**3)" #defining function
+x = int(1) #setting x equal to 1
+check1 = check_alternating(function) #calling the function to check if the function is alternating
+check2 = check_always_decreasing(function) #calling function to check if it is always decreasing
 
-if check1 and check2:
+if check1 and check2: #if it is always decreasing and alternating we can assume
     number_of_terms = (10**(4/3))-1
-    n = math.ceil(number_of_terms)
-    print(n)
+    number_five = math.ceil(number_of_terms) #round up to get the number of terms
+    print(number_five) #print the answer to number five
 
 
 
@@ -156,6 +156,54 @@ if check1 and check2:
 #with accuracy 10^-4 using a = -4 and b = 7.
 #a) Using the bisection method
 
+def bisection(left, right, function): #function to calculate number of iterations using bisection
+    x = left
+    starting_left = eval(function) #calclating at the left bound
+    x = right
+    starting_right = eval(function) #calculating at the right bound
+
+    if starting_right * starting_left >= 0: #if left and right are ever of the same sign, return
+        print("a and b are not of opposite sign.")
+        return
+
+    tol = .0001 #the defined tolerance
+    difference = right - left #difference between the bounds
+    max_iterations = 30 #maximum number of iterations to meet tolerance
+    i = 0 #defining the iteration counter
+
+    while (difference >= tol and i<= max_iterations): #looping until reaching tolerance or max iterations
+        i += 1 #adding to iteration counter
+
+        mid_point = (left + right)/2 #calculating the mid point
+        x = mid_point 
+        evaluated_at_mid = eval(function) #calcuating the function at the midpoint
+
+        if evaluated_at_mid == 0.0: #if the value at the midpoint is 0, break the loop
+            break
+
+        x = left
+        evaluated_at_left = eval(function) #calculating value of function at the left bound
+
+        if evaluated_at_mid > 0 and evaluated_at_left < 0:
+            right = mid_point #set right to the mid point if requirements met
+        elif evaluated_at_mid < 0 and evaluated_at_left > 0:
+            right = mid_point #set right to the mid point if requirements met
+        else:
+            left = mid_point #for all other results, set the left to the midpoint
+        
+        difference = abs(right - left) #calculate the difference with the new left or right
+
+    return i #return the number of iterations
+
+
+a = -4 #setting the left bound
+b = 7 #setting the right bound
+function_b = "(x**3) + 4*(x**2) - 10" #defining the function
+number_6a = bisection(a, b, function_b) #calling the function to calculate the number of iterations
+
+print(number_6a) #printing the answer to number 6a
 
 #b) Using the newton Raphson method
+
+
 
